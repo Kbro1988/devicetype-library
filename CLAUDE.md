@@ -39,6 +39,41 @@ Day-to-day device-type work happens on `custom`: add/edit YAML files under `devi
 follow the same field conventions as `CONTRIBUTING.md` (schema validity, correct slug format, etc.) since
 the CI validation in this fork still runs the same checks, then commit and `git push origin custom`.
 
+# Custom device-type YAML conventions
+
+On top of the repo-native structural conventions (2-space indent, sequences indented under their key,
+`console-ports` → `interfaces` → `power-ports` → `power-outlets` ordering, types drawn from the enums in
+`schema/generated_schema.json`), custom device types on `custom` follow these field patterns:
+
+- `weight_unit: lb` — pounds, not kilograms. Prefer the manufacturer's native lb spec value over a
+  kg→lb conversion when the source documentation states it directly.
+- `comments:` — a single markdown link to the official data sheet / product page:
+  `'[Data Sheet](<url>)'`
+- `description:` — `'<Device type> | <VA>/<W> | <voltage>'`, e.g. `'UPS | 5000VA/4000W | 208V'`
+
+# Researching & validating a new device type
+
+When building a device type from manufacturer documentation (as opposed to a user-supplied example):
+
+- Pull specs from the manufacturer's official installer/user guide or spec sheet, not reseller listings
+  alone — resellers occasionally disagree with each other (e.g. weight/voltage typos) or omit connector
+  detail. Cross-check anything a reseller-only source claims against the official PDF where possible.
+- If the official manual is only available as PDF and `pdftotext`/`poppler-utils` aren't installed (no
+  `sudo` in this environment), extract text with a throwaway venv: `python3 -m venv /tmp/x/venv &&
+  /tmp/x/venv/bin/pip install pypdf`, then `PdfReader(...).pages[i].extract_text()`. Clean up the temp
+  dir when done.
+- Some products (UPS units especially) ship with a swappable/optional power-distribution accessory
+  (e.g. Vertiv's PD2-xxx PODs) rather than one fixed set of outlets — don't assume the first
+  configuration found is "the" standard. Check whether the documentation calls out a factory-default,
+  and if it genuinely doesn't (multiple options, none marked default), pick the most useful
+  configuration for tracking real power connections, note which one was chosen, and flag the assumption
+  to the user rather than silently picking one — a config choice that changes the input connector or
+  outlet set is a meaningfully different device, not a cosmetic detail.
+- Before considering a new file done, validate it locally rather than relying on CI:
+  `jsonschema` (`Draft202012Validator`) against `schema/devicetype.json` with `schema/generated_schema.json`,
+  `schema/reusable.json`, and `schema/components.json` registered under their `urn:devicetype-library:*`
+  ids, plus `yamllint -c .yamllint.yaml`. Both are installable in a throwaway venv the same way as above.
+
 # Rules for Claude
 
 - Never push to `upstream` (its push URL is intentionally disabled).
