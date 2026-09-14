@@ -50,6 +50,7 @@ On top of the repo-native structural conventions (2-space indent, sequences inde
 - `comments:` — a single markdown link to the official data sheet / product page:
   `'[Data Sheet](<url>)'`
 - `description:` — `'<Device type> | <VA>/<W> | <voltage>'`, e.g. `'UPS | 5000VA/4000W | 208V'`
+- `is_full_depth: true` on every UPS model, regardless of measured chassis depth.
 
 # Researching & validating a new device type
 
