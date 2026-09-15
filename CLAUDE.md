@@ -52,6 +52,55 @@ On top of the repo-native structural conventions (2-space indent, sequences inde
 - `description:` — `'<Device type> | <VA>/<W> | <voltage>'`, e.g. `'UPS | 5000VA/4000W | 208V'`
 - `is_full_depth: true` on every UPS model, regardless of measured chassis depth.
 
+# Module bays instead of hardcoded cards/PODs
+
+Vertiv UPS units (and similar gear) take optional/swappable accessories in a physical slot — a
+network management card in the IntelliSlot bay, or (on the 5000-6000VA-class GXT4/GXT5 MV models) a
+removable power-distribution box (POD) that determines the actual input connector and output
+receptacles. Model these as `module-bays` on the device type, not as hardcoded `interfaces` /
+`power-ports` / `power-outlets` — the actual components belong on separate module-types under
+`module-types/Vertiv/`, so a real device can have whichever card/POD it actually has installed
+selected in NetBox, and the UPS device type itself doesn't force one specific assumption.
+
+- **Network card slot**: `module-bays: [{name: IntelliSlot, position: IntelliSlot}]` on the device
+  type. Card model-types: `IS-WEBCARD` / `IS-UNITY-DP` (GXT3 and GXT4 — confirmed via their manuals;
+  RDU101/RDU120 are **not** compatible with GXT3/GXT4) and `RDU101` / `RDU120` (GXT5, GXT5LI, GXT5 MV
+  — both fit the same slot, RDU120 is the newer/gigabit card, neither is tied to a specific chassis
+  generation).
+- **POD slot** (5000-6000VA-class GXT4/GXT5 MV units only): `module-bays: [{name: Power Distribution
+  Box, position: Power Distribution Box}]` on the device type; the chassis's own fixed components
+  (e.g. the External Battery Cabinet connector) stay directly on the device type since they aren't
+  part of the swappable box. POD model-types: `PD2-HDWR-MBS`/`PD2-001`-`PD2-007` (GXT4-5000/6000RT208)
+  and `PD5-UL6HDWR-MBS`/`PD5-001`-`PD5-006` (GXT5-5000/6000MVRT4UXLN) — all documented options built
+  as module-types, not just the ones currently in use, so any physically-installed POD can be
+  selected later.
+- Module-type component names follow the repo's existing UPS-network-card convention (see
+  `module-types/APC/AP9631.yaml`, `module-types/CyberPower/RMCARD400.yaml`): suffix each name with
+  `[{module}]`, e.g. `Network [{module}]`, `Output 1 [{module}]`.
+- POD module-type `description` follows its own summary pattern (network cards keep plain free-text
+  descriptions — this pattern is PD2-xxx/PD5-xxx only):
+  `'UPS <GXT4|GXT5> | POD | In: <type> (x<qty>) | Out: <type> (x<qty>), <type> (x<qty>), ...'`
+  e.g. `'UPS GXT4 | POD | In: L14-30P (x1) | Out: 5-20R (x4), L14-30R (x1), L6-30R (x1)'`. For the
+  hardwired PODs (`PD2-HDWR-MBS`, `PD5-UL6HDWR-MBS`) both sides read `In: Hardwired | Out: Hardwired`.
+  Family is `GXT4` for `PD2-*` (fits GXT4-5000/6000RT208), `GXT5` for `PD5-*` (fits GXT5-5000/6000MVRT4UXLN).
+- POD module-types intentionally omit `maximum_draw` on their power-port — the same POD part fits
+  multiple UPS wattages (e.g. PD2-003 fits both the 5000 and 6000VA hosts), so a host-specific draw
+  value on the shared module would be misleading.
+- **What does *not* become a module bay**: fixed, non-removable chassis ports — USB, RS-232, RS-485,
+  etc. that are soldered to the UPS main board. Every manual's rear-panel diagram lists these
+  alongside genuinely fixed features (cooling fan, input breaker, EBC connector), never as an item on
+  the swappable card or POD options list — check that before assuming a port belongs in a module. If
+  there's no alternate part number you could install in its place, it stays as a plain component
+  (`console-ports`/`interfaces`) directly on the device type.
+- **console-port vs. interface for serial/data ports**: a port used for CLI/terminal access
+  (RS-232, or USB used the same way) is a `console-port`. A port that carries a data/BMS protocol
+  instead of a CLI session — RS-485 for BACnet MSTP/Modbus RTU, a Liebert SN/Geist sensor-network
+  port — is an `interface` with `type: other`, matching this repo's existing convention for such
+  ports (see `module-types/APC/AP9631.yaml`'s "Universal I/O" ports). A USB port whose job is
+  firmware/config transfer via flash drive (not a terminal session) is still modeled as a
+  `console-port`, per existing repo precedent (`module-types/APC/AP9640.yaml`), even though its
+  function isn't literally a console — there's no more fitting component type in the schema.
+
 # Researching & validating a new device type
 
 When building a device type from manufacturer documentation (as opposed to a user-supplied example):
@@ -64,12 +113,10 @@ When building a device type from manufacturer documentation (as opposed to a use
   /tmp/x/venv/bin/pip install pypdf`, then `PdfReader(...).pages[i].extract_text()`. Clean up the temp
   dir when done.
 - Some products (UPS units especially) ship with a swappable/optional power-distribution accessory
-  (e.g. Vertiv's PD2-xxx PODs) rather than one fixed set of outlets — don't assume the first
-  configuration found is "the" standard. Check whether the documentation calls out a factory-default,
-  and if it genuinely doesn't (multiple options, none marked default), pick the most useful
-  configuration for tracking real power connections, note which one was chosen, and flag the assumption
-  to the user rather than silently picking one — a config choice that changes the input connector or
-  outlet set is a meaningfully different device, not a cosmetic detail.
+  (e.g. Vertiv's PD2-xxx/PD5-xxx PODs) or an optional network card (IntelliSlot) rather than one fixed
+  set of components — don't hardcode any single option onto the device type or guess which one a real
+  unit has installed. Model these as a `module-bay` and build every documented option as its own
+  module-type instead, per **Module bays instead of hardcoded cards/PODs** above.
 - Before considering a new file done, validate it locally rather than relying on CI:
   `jsonschema` (`Draft202012Validator`) against `schema/devicetype.json` with `schema/generated_schema.json`,
   `schema/reusable.json`, and `schema/components.json` registered under their `urn:devicetype-library:*`
