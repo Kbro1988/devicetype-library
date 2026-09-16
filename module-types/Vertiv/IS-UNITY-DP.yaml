@@ -1,0 +1,16 @@
+---
+manufacturer: Vertiv
+model: IS-UNITY-DP
+part_number: IS-UNITY-DP
+description: Liebert IntelliSlot Unity Card - SNMP/BACnet/Modbus, RS-485 and web management
+comments: '[Data Sheet](https://www.vertiv.com/4933b7/globalassets/shared/liebert-intellislot-unity-platform-cards-installation-sheet.pdf)'
+interfaces:
+  - name: Network [{module}]
+    type: 100base-tx
+    mgmt_only: true
+  - name: RS-485 [{module}]
+    type: other
+    description: BACnet MSTP/Modbus RTU building-management bus (RJ-45)
+  - name: One-Wire Sensor [{module}]
+    type: other
+    description: Liebert SN sensor network (RJ-45)

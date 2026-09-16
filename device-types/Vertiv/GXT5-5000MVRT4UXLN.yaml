@@ -1,0 +1,29 @@
+---
+manufacturer: Vertiv
+model: GXT5-5000MVRT4UXLN
+slug: vertiv-gxt5-5000mvrt4uxln
+part_number: GXT5-5000MVRT4UXLN
+u_height: 4
+is_full_depth: true
+comments: '[Data Sheet](https://www.vertiv.com/en-us/products-catalog/critical-power/uninterruptible-power-supplies-ups/gxt5-5000mvrt4uxln-liebert-gxt5-5000va5000w-208vac-/)'
+weight: 125.6
+weight_unit: lb
+console-ports:
+  - name: USB
+    type: usb-b
+  - name: RS232
+    type: rj-45
+interfaces:
+  - name: RS485
+    type: other
+    description: External temperature sensor bus (RJ-45)
+module-bays:
+  - name: IntelliSlot
+    position: IntelliSlot
+  - name: Power Distribution Box
+    position: Power Distribution Box
+power-ports:
+  - name: Battery connector (EBC)
+    type: other
+    label: ebc-input
+description: 'UPS | 5000VA/5000W | 208V'

@@ -1,0 +1,18 @@
+---
+manufacturer: Vertiv
+model: PD2-007
+part_number: PD2-007
+description: 'UPS GXT4 | POD | In: L14-30P (x1) | Out: L5-20R (x2), L6-20R (x2)'
+comments: '[Data Sheet](https://www.vertiv.com/49f4fa/globalassets/products/critical-power/uninterruptible-power-supplies-ups/liebert-gxt4-208v-5000-10000va-6000rtl630-user-manual-sl-23194.pdf)'
+power-ports:
+  - name: Input Power [{module}]
+    type: nema-l14-30p
+power-outlets:
+  - name: Output 1 [{module}]
+    type: nema-l5-20r
+  - name: Output 2 [{module}]
+    type: nema-l5-20r
+  - name: Output 3 [{module}]
+    type: nema-l6-20r
+  - name: Output 4 [{module}]
+    type: nema-l6-20r

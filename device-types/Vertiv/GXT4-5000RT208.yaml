@@ -1,0 +1,23 @@
+---
+manufacturer: Vertiv
+model: GXT4-5000RT208
+slug: vertiv-gxt4-5000rt208
+part_number: GXT4-5000RT208
+u_height: 4
+is_full_depth: true
+comments: '[Data Sheet](https://www.vertiv.com/en-ca/products-catalog/critical-power/uninterruptible-power-supplies-ups/gxt4-5000rt208/)'
+weight: 131.8
+weight_unit: lb
+console-ports:
+  - name: USB
+    type: usb-b
+module-bays:
+  - name: IntelliSlot
+    position: IntelliSlot
+  - name: Power Distribution Box
+    position: Power Distribution Box
+power-ports:
+  - name: Battery connector (EBC)
+    type: other
+    label: ebc-input
+description: 'UPS | 5000VA/4000W | 208V'

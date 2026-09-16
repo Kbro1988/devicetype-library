@@ -1,0 +1,20 @@
+---
+manufacturer: Vertiv
+model: RDU120
+part_number: RDU120
+description: Liebert IntelliSlot RDU120 - SNMP/Modbus/BACnet and web management, gigabit
+comments: '[Data Sheet](https://www.vertiv.com/4aae66/globalassets/shared/vertiv-liebert-intellislot-rdu120-communications-card-installer-user-guide-av-50006.pdf)'
+console-ports:
+  - name: USB-C [{module}]
+    type: usb-c
+    description: Firmware/configuration update via USB drive
+  - name: RS-485/RS-232 [{module}]
+    type: rj-45
+    description: Shared port - RS-485 (BACnet MSTP/Modbus RTU) or RS-232 CLI, only one mode active at a time
+interfaces:
+  - name: Network [{module}]
+    type: 1000base-t
+    mgmt_only: true
+  - name: Sensor Port [{module}]
+    type: other
+    description: Geist one-wire sensor connector (RJ-12)

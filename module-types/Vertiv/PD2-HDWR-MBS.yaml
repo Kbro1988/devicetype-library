@@ -1,0 +1,9 @@
+---
+manufacturer: Vertiv
+model: PD2-HDWR-MBS
+part_number: PD2-HDWR-MBS
+description: 'UPS GXT4 | POD | In: Hardwired | Out: Hardwired'
+comments: '[Data Sheet](https://www.vertiv.com/49f4fa/globalassets/products/critical-power/uninterruptible-power-supplies-ups/liebert-gxt4-208v-5000-10000va-6000rtl630-user-manual-sl-23194.pdf)'
+power-ports:
+  - name: Input Power [{module}]
+    type: hardwired

@@ -1,0 +1,9 @@
+---
+manufacturer: Vertiv
+model: PD5-UL6HDWR-MBS
+part_number: PD5-UL6HDWR-MBS
+description: 'UPS GXT5 | POD | In: Hardwired | Out: Hardwired'
+comments: '[Data Sheet](https://www.vertiv.com/4963b9/globalassets/products/critical-power/uninterruptible-power-supplies-ups/vertiv-liebert-gxt5-ups-3000-20000va-208vac-ups/liebert-gxt5-installer-user-guide-120-208v-input-l1-l2-n-g-120-208v-output-mv-sl-70524.pdf)'
+power-ports:
+  - name: Input Power [{module}]
+    type: hardwired

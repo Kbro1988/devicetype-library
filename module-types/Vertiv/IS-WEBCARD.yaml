@@ -1,0 +1,10 @@
+---
+manufacturer: Vertiv
+model: IS-WEBCARD
+part_number: IS-WEBCARD
+description: Liebert IntelliSlot Web Card - SNMP and web management
+comments: '[Data Sheet](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/-liebert-intellislot-485-and-building-management-system--interface-cards/)'
+interfaces:
+  - name: Network [{module}]
+    type: 100base-tx
+    mgmt_only: true

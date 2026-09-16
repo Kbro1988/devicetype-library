@@ -1,0 +1,37 @@
+---
+manufacturer: Vertiv
+model: GXT3-1500RT120
+slug: vertiv-gxt3-1500rt120
+part_number: GXT3-1500RT120
+u_height: 2
+is_full_depth: true
+comments: '[Data Sheet](https://www.vertiv.com/4a21a7/globalassets/products/critical-power/uninterruptible-power-supplies-ups/liebert-gxt3-ups/gxt3-brochure-sl-23182.pdf)'
+weight: 51.1
+weight_unit: lb
+console-ports:
+  - name: USB
+    type: usb-b
+module-bays:
+  - name: IntelliSlot
+    position: IntelliSlot
+power-ports:
+  - name: Input Power
+    type: nema-5-15p
+    maximum_draw: 1620
+  - name: Battery connector (EBC)
+    type: other
+    label: ebc-input
+power-outlets:
+  - name: Output 1
+    type: nema-5-15r
+  - name: Output 2
+    type: nema-5-15r
+  - name: Output 3
+    type: nema-5-15r
+  - name: Output 4
+    type: nema-5-15r
+  - name: Output 5
+    type: nema-5-15r
+  - name: Output 6
+    type: nema-5-15r
+description: 'UPS | 1500VA/1350W | 120V'
