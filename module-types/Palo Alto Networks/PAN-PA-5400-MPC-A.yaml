@@ -2,6 +2,10 @@
 manufacturer: Palo Alto Networks
 model: PAN-PA-5400-MPC-A
 part_number: PAN-PA-5400-MPC-A
+weight: 4
+weight_unit: lb
+comments: '[Data Sheet](https://docs.paloaltonetworks.com/hardware/pa-5400-hardware-reference/pa-5400-series-module-and-interface-card-information/pa-5400-series-firewall-management-processor-card-mpc/pa-5400-mpc-a)'
+description: 'Management Processor Card (MPC) for the PA-5450 firewall - mandatory card providing management, logging and HA connectivity'
 interfaces:
   - name: HA1-A
     type: 10gbase-x-sfpp

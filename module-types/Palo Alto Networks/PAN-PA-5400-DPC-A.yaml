@@ -2,3 +2,7 @@
 manufacturer: Palo Alto Networks
 model: PAN-PA-5400-DPC-A
 part_number: PAN-PA-5400-DPC-A
+weight: 5
+weight_unit: lb
+comments: '[Data Sheet](https://docs.paloaltonetworks.com/hardware/pa-5400-hardware-reference/pa-5400-series-module-and-interface-card-information/pa-5400-series-firewall-data-processor-card-dpc/pa-5400-dpc-a)'
+description: 'Data Processor Card (DPC) for the PA-5450 firewall - adds data plane processing instances; no front-panel ports or interfaces'

@@ -2,6 +2,10 @@
 manufacturer: Palo Alto Networks
 model: PAN-PA-5400-NC-A
 part_number: PAN-PA-5400-NC-A
+weight: 4
+weight_unit: lb
+comments: '[Data Sheet](https://docs.paloaltonetworks.com/hardware/pa-5400-hardware-reference/pa-5400-series-module-and-interface-card-information/pa-5400-series-networking-card-nc/pa-5400-nc-a)'
+description: 'Networking Card (NC) for the PA-5450 firewall - front-panel network connectivity, up to 100Gbps'
 interfaces:
   - name: ethernet{module}/1
     type: 10gbase-t

@@ -2,6 +2,10 @@
 manufacturer: Palo Alto Networks
 model: PAN-PWR-2200W-AC
 part_number: PAN-PWR-2200W-AC
+weight: 2
+weight_unit: lb
+comments: '[Data Sheet](https://docs.paloaltonetworks.com/hardware/pa-5400-hardware-reference/pa-5400-series-firewall-specifications/pa-5400-series-firewall-electrical-specifications/pa-5450-firewall-component-electrical-specifications)'
+description: 'Hot-swappable AC power supply for the PA-5450 firewall - 100-240VAC input, +2200W output @ 200VAC (derates to +1200W @ 100VAC)'
 power-ports:
   - name: PS{module}
     type: iec-60320-c14
