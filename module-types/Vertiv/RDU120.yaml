@@ -2,7 +2,7 @@
 manufacturer: Vertiv
 model: RDU120
 part_number: RDU120
-description: Liebert IntelliSlot RDU120 - SNMP/Modbus/BACnet and web management, gigabit
+description: 'UPS | IntelliSlot | RDU120 - SNMP/Modbus/BACnet and Web Mgmt.'
 comments: '[Data Sheet](https://www.vertiv.com/4aae66/globalassets/shared/vertiv-liebert-intellislot-rdu120-communications-card-installer-user-guide-av-50006.pdf)'
 console-ports:
   - name: USB-C [{module}]

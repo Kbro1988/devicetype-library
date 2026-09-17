@@ -1,3 +1,102 @@
+# Repository scope and architecture
+
+This is Kevin's personal fork of the NetBox Device Type Library. It is a data repository:
+YAML definitions under `device-types/`, `module-types/`, and `rack-types/` describe NetBox
+objects, while `elevation-images/` and `module-images/` provide optional visual assets.
+The JSON files under `schema/` define the validation contracts; `schema/generated_schema.json`
+is generated from the component schemas and should not be edited manually. The Python code
+under `tests/` loads YAML with a Decimal-safe loader, validates definitions against the
+appropriate JSON schema, checks filenames/slugs/component positions, and validates image
+associations. The committed `tests/known-*.json` files are generated caches used by the
+validation harness.
+
+Definitions are intentionally split between fixed chassis components and optional,
+installable components: fixed ports belong on the device type, while replaceable network
+cards, power supplies, PODs, and similar parts are module types selected through
+`module-bays`. Keep each manufacturer in its own directory and create one definition per
+unique model or part number.
+
+## Build, test, and lint commands
+
+The project has no application build step. Use Python 3.12 (the CI version) and install
+the pinned dependencies:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+Run the full definition validation suite:
+
+```bash
+DTL_USE_LOCAL_KNOWN_SLUGS=1 .venv/bin/python -m pytest tests/definitions_test.py --tb=short -v
+```
+
+Run one parametrized definition check by matching its path/model in the test id:
+
+```bash
+DTL_USE_LOCAL_KNOWN_SLUGS=1 .venv/bin/python -m pytest tests/definitions_test.py -k 'GXT4-700RT120' -v
+```
+
+The test harness discovers changed definitions from the git diff against `upstream/master`.
+For a brand-new file that is not committed, do not treat a passing `-k` run as sufficient:
+validate that file directly with the Decimal-safe loader and `Draft202012Validator`, as
+described in the repository's research/validation notes below.
+
+Lint YAML with the same strict command used by CI:
+
+```bash
+.venv/bin/yamllint --format github --strict device-types/ module-types/
+```
+
+Run formatting and all configured pre-commit checks:
+
+```bash
+.venv/bin/pre-commit run --config .pre-commit-hooks-config.yaml --all-files
+.venv/bin/pre-commit run --config .pre-commit-yamlfmt-config.yaml --all-files
+```
+
+The hooks enforce YAML parsing, trailing-newline/whitespace cleanup, strict yamllint, and
+the repository's 2-space mapping / 4-space sequence formatting. The main pre-commit
+configuration also runs `tests/definitions_test.py`; its test collection is intentionally
+pinned rather than using bare `pytest`.
+
+## Definition conventions
+
+Follow `CONTRIBUTING.md` and the schemas for field names and enum values. In particular:
+
+- Name files after the exact model or part number, use a human-friendly manufacturer
+  directory, and use a lowercase slug beginning with the slugified manufacturer.
+- Put device attributes before component lists; use two-space indentation, avoid needless
+  quotes, and end YAML files with a blank line.
+- Include `weight`, `weight_unit`, and `airflow` when reliable source data is available.
+- Model only chassis-fixed components directly on a device. Model swappable or optional
+  components as module types and connect them through `module-bays`; do not bake one
+  possible module/POD configuration into the host.
+- Component names and positions must be unique within their component type, and interface
+  names should use the complete operating-system form where applicable.
+- Prefer official manufacturer manuals/spec sheets for model existence and specifications.
+  Verify the exact model string before creating a file, and cross-check suspicious values
+  against an independent source. Do not silently substitute a similar model.
+
+## Fork branch workflow
+
+All personal work belongs on `custom`, which tracks `origin/custom`; keep `master` as an
+exact mirror of `upstream/master` and never add personal definitions there. Sync the mirror
+with `git checkout master && git pull upstream master && git push origin master`, then rebase
+personal work with `git checkout custom && git rebase master` and publish with
+`git push origin custom --force-with-lease`. Never push to `upstream` or open an upstream PR
+from `custom` unless explicitly requested. Do not manually edit generated known-data caches.
+
+## CI boundaries
+
+The validation workflow runs YAML lint, pre-commit formatting, and the pinned definition
+tests. Untrusted pull requests are restricted to contribution directories
+(`device-types/`, `module-types/`, `rack-types/`, `elevation-images/`, and `module-images/`);
+changes to tests, scripts, schemas, dependency files, or workflow/configuration files require
+maintainer trust or the `ci-approved` label. The test job uses a read-only token and does not
+execute arbitrary newly added test modules.
+
 # Repo purpose
 
 This is a fork of [netbox-community/devicetype-library](https://github.com/netbox-community/devicetype-library),

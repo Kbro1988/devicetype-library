@@ -2,7 +2,7 @@
 manufacturer: Vertiv
 model: RDU101
 part_number: RDU101
-description: Liebert IntelliSlot RDU101 - SNMP/Velocity Protocol and web management
+description: 'UPS | IntelliSlot | RDU101 - SNMP/Velocity Protocol and Web Mgmt.'
 comments: '[Data Sheet](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/liebert-intellislot-rdu101-communications-card/)'
 console-ports:
   - name: USB [{module}]

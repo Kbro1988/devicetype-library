@@ -1,0 +1,41 @@
+---
+manufacturer: Vertiv
+model: GXT5LI-2000LVRT2UXLN
+slug: vertiv-gxt5li-2000lvrt2uxln
+part_number: GXT5LI-2000LVRT2UXLN
+u_height: 2
+is_full_depth: true
+comments: '[Data Sheet](https://www.vertiv.com/en-us/products-catalog/critical-power/uninterruptible-power-supplies-ups/gxt5li-2000lvrt2uxln/)'
+weight: 39.7
+weight_unit: lb
+console-ports:
+  - name: USB
+    type: usb-b
+  - name: RS232
+    type: rj-45
+module-bays:
+  - name: IntelliSlot
+    position: IntelliSlot
+power-ports:
+  - name: Input Power
+    type: nema-l5-20p
+    maximum_draw: 2160
+  - name: Battery connector (EBC)
+    type: other
+    label: ebc-input
+power-outlets:
+  - name: Output 1
+    type: nema-5-20r
+  - name: Output 2
+    type: nema-5-20r
+  - name: Output 3
+    type: nema-5-20r
+  - name: Output 4
+    type: nema-5-20r
+  - name: Output 5
+    type: nema-5-20r
+  - name: Output 6
+    type: nema-5-20r
+  - name: Output 7
+    type: nema-l5-20r
+description: 'UPS | 2000VA/1800W | 120V'

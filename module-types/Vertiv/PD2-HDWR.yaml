@@ -1,0 +1,11 @@
+---
+manufacturer: Vertiv
+model: PD2-HDWR
+part_number: PD2-HDWR
+weight: 5.1
+weight_unit: lb
+description: 'UPS GXT3 | POD | In: Hardwired | Out: Hardwired'
+comments: '[Data Sheet](https://www.vertiv.com/48f7c0/globalassets/products/critical-power/uninterruptible-power-supplies-ups/liebert-gxt3-user-manual-5kva-10kva-6000rtl630.pdf)'
+power-ports:
+  - name: Input Power [{module}]
+    type: hardwired

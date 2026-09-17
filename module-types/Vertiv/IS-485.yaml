@@ -1,10 +1,9 @@
 ---
 manufacturer: Vertiv
-model: IS-WEBCARD
-part_number: IS-WEBCARD
-description: 'UPS | IntelliSlot | Web Card - SNMP and Web Mgmt.'
+model: IS-485
+part_number: IS-485
+description: 'UPS | IntelliSlot | 485 Card - RS-485 to BMS/Computer'
 comments: '[Data Sheet](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/-liebert-intellislot-485-and-building-management-system--interface-cards/)'
 interfaces:
-  - name: Network [{module}]
-    type: 100base-tx
-    mgmt_only: true
+  - name: RS-485 [{module}]
+    type: other

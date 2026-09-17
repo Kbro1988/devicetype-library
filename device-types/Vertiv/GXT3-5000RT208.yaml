@@ -1,0 +1,23 @@
+---
+manufacturer: Vertiv
+model: GXT3-5000RT208
+slug: vertiv-gxt3-5000rt208
+part_number: GXT3-5000RT208
+u_height: 4
+is_full_depth: true
+comments: '[Data Sheet](https://www.vertiv.com/48f7c0/globalassets/products/critical-power/uninterruptible-power-supplies-ups/liebert-gxt3-user-manual-5kva-10kva-6000rtl630.pdf)'
+weight: 56.2
+weight_unit: lb
+console-ports:
+  - name: USB
+    type: usb-b
+module-bays:
+  - name: IntelliSlot
+    position: IntelliSlot
+  - name: Power Distribution Box
+    position: Power Distribution Box
+power-ports:
+  - name: Battery connector (EBC)
+    type: other
+    label: ebc-input
+description: 'UPS | 5000VA/4000W | 208V'

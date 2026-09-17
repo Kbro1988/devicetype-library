@@ -1,0 +1,10 @@
+---
+manufacturer: Vertiv
+model: IS-RELAY
+part_number: IS-RELAY
+description: 'UPS | IntelliSlot | Relay Card - Dry-Contact Relay Outputs'
+comments: '[Data Sheet](https://manuals.plus/m/2a714f313da9b20212ea5dd39435e52ae9cd33709b589c2f46505eaf06fc4d07)'
+interfaces:
+  - name: Relay Contacts [{module}]
+    type: other
+    description: DB25 connector, with a removable 14-pin terminal-block adapter for the same signals

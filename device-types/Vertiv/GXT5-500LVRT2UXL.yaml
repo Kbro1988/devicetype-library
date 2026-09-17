@@ -1,0 +1,39 @@
+---
+manufacturer: Vertiv
+model: GXT5-500LVRT2UXL
+slug: vertiv-gxt5-500lvrt2uxl
+part_number: GXT5-500LVRT2UXL
+u_height: 2
+is_full_depth: true
+comments: '[Data Sheet](https://www.vertiv.com/en-us/products-catalog/critical-power/uninterruptible-power-supplies-ups/gxt5-500lvrt2uxl-vertiv-liebert-gxt5-500va500w-120v-online-double-conversion-ups-/)'
+weight: 37
+weight_unit: lb
+console-ports:
+  - name: USB
+    type: usb-b
+  - name: RS232
+    type: rj-45
+module-bays:
+  - name: IntelliSlot
+    position: IntelliSlot
+power-ports:
+  - name: Input Power
+    type: nema-5-15p
+    maximum_draw: 600
+  - name: Battery connector (EBC)
+    type: other
+    label: ebc-input
+power-outlets:
+  - name: Output 1
+    type: nema-5-15r
+  - name: Output 2
+    type: nema-5-15r
+  - name: Output 3
+    type: nema-5-15r
+  - name: Output 4
+    type: nema-5-15r
+  - name: Output 5
+    type: nema-5-15r
+  - name: Output 6
+    type: nema-5-15r
+description: 'UPS | 500VA/500W | 120V'

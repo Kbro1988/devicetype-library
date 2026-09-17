@@ -63,26 +63,41 @@ receptacles. Model these as `module-bays` on the device type, not as hardcoded `
 selected in NetBox, and the UPS device type itself doesn't force one specific assumption.
 
 - **Network card slot**: `module-bays: [{name: IntelliSlot, position: IntelliSlot}]` on the device
-  type. Card model-types: `IS-WEBCARD` / `IS-UNITY-DP` (GXT3 and GXT4 — confirmed via their manuals;
-  RDU101/RDU120 are **not** compatible with GXT3/GXT4) and `RDU101` / `RDU120` (GXT5, GXT5LI, GXT5 MV
-  — both fit the same slot, RDU120 is the newer/gigabit card, neither is tied to a specific chassis
-  generation).
+  type. Card model-types: `IS-WEBCARD` / `IS-UNITY-DP` / `IS-RELAY` / `IS-485` / `IS-MULTIPORT` (GXT3
+  and GXT4 — confirmed via their manuals; RDU101/RDU120 are **not** compatible with GXT3/GXT4) and
+  `RDU101` / `RDU120` (GXT5, GXT5LI, GXT5 MV — both fit the same slot, RDU120 is the newer/gigabit
+  card, neither is tied to a specific chassis generation). The GXT3 5000-10,000VA line specifically
+  uses an even older card set (`IS-RELAY`, `IS-485`, `IS-MULTIPORT`, plus `IS-WEBCARD` under the
+  manual's "SNMP Card" name) — don't assume a card family from a smaller/newer sibling model applies
+  without checking that exact chassis's own manual.
+- IntelliSlot card module-type `description` follows a fixed pattern (screenshot-confirmed by the user):
+  `'UPS | IntelliSlot | <Card Name> - <Protocol list> and Web Mgmt.'`, e.g.
+  `'UPS | IntelliSlot | Unity Card - SNMP/BACnet/Modbus, RS-485 and Web Mgmt.'`. Card name is the
+  product's natural short name (`Web Card` for IS-WEBCARD, `RDU101` for RDU101 — kept as-is when the
+  model number already reads as a name). For cards with no IP/web capability at all (`IS-RELAY`,
+  `IS-485`, `IS-MULTIPORT` — dry contacts / RS-485 / multiplexed ports only, no SNMP or web UI), drop
+  the "and Web Mgmt." suffix rather than claim a capability that doesn't exist, e.g.
+  `'UPS | IntelliSlot | Relay Card - Dry-Contact Relay Outputs'`.
 - **POD slot** (5000-6000VA-class GXT4/GXT5 MV units only): `module-bays: [{name: Power Distribution
   Box, position: Power Distribution Box}]` on the device type; the chassis's own fixed components
   (e.g. the External Battery Cabinet connector) stay directly on the device type since they aren't
-  part of the swappable box. POD model-types: `PD2-HDWR-MBS`/`PD2-001`-`PD2-007` (GXT4-5000/6000RT208)
-  and `PD5-UL6HDWR-MBS`/`PD5-001`-`PD5-006` (GXT5-5000/6000MVRT4UXLN) — all documented options built
-  as module-types, not just the ones currently in use, so any physically-installed POD can be
-  selected later.
+  part of the swappable box. POD model-types: `PD2-HDWR`/`PD2-HDWR-MBS`/`PD2-001`-`PD2-007`
+  (GXT3/GXT4-5000/6000RT208 — see the family-label note below) and `PD5-UL6HDWR-MBS`/`PD5-001`-
+  `PD5-006` (GXT5-5000/6000MVRT4UXLN) — all documented options built as module-types, not just the
+  ones currently in use, so any physically-installed POD can be selected later.
 - Module-type component names follow the repo's existing UPS-network-card convention (see
   `module-types/APC/AP9631.yaml`, `module-types/CyberPower/RMCARD400.yaml`): suffix each name with
   `[{module}]`, e.g. `Network [{module}]`, `Output 1 [{module}]`.
-- POD module-type `description` follows its own summary pattern (network cards keep plain free-text
-  descriptions — this pattern is PD2-xxx/PD5-xxx only):
-  `'UPS <GXT4|GXT5> | POD | In: <type> (x<qty>) | Out: <type> (x<qty>), <type> (x<qty>), ...'`
+- POD module-type `description` follows its own summary pattern (distinct from the IntelliSlot-card
+  pattern above — this one is PD2-xxx/PD5-xxx only):
+  `'UPS <family> | POD | In: <type> (x<qty>) | Out: <type> (x<qty>), <type> (x<qty>), ...'`
   e.g. `'UPS GXT4 | POD | In: L14-30P (x1) | Out: 5-20R (x4), L14-30R (x1), L6-30R (x1)'`. For the
   hardwired PODs (`PD2-HDWR-MBS`, `PD5-UL6HDWR-MBS`) both sides read `In: Hardwired | Out: Hardwired`.
-  Family is `GXT4` for `PD2-*` (fits GXT4-5000/6000RT208), `GXT5` for `PD5-*` (fits GXT5-5000/6000MVRT4UXLN).
+  Family is `GXT4` for `PD2-*` (fits GXT4-5000/6000RT208), `GXT5` for `PD5-*` (fits GXT5-5000/6000MVRT4UXLN)
+  — except `PD2-HDWR-MBS`/`PD2-001`-`PD2-006`, confirmed via the GXT3 5000-10000VA manual's own power-
+  distribution table to be the identical shared part across both generations, so those use
+  `GXT3/GXT4` instead. `PD2-007` has no GXT3-manual confirmation, so it stays `GXT4`-only — don't
+  widen a family label without a source actually naming the older line too.
 - POD module-types intentionally omit `maximum_draw` on their power-port — the same POD part fits
   multiple UPS wattages (e.g. PD2-003 fits both the 5000 and 6000VA hosts), so a host-specific draw
   value on the shared module would be misleading.
@@ -105,9 +120,25 @@ selected in NetBox, and the UPS device type itself doesn't force one specific as
 
 When building a device type from manufacturer documentation (as opposed to a user-supplied example):
 
+- **Confirm the model actually exists before building anything.** Kevin sources model numbers from a
+  personal spreadsheet that can contain typos — never assume a given string is correct just because
+  search results mention something similar. Check that the exact string appears verbatim in an
+  official source (a manufacturer's own "available models" table in a manual, or its product catalog),
+  not just that reseller listings echo it. If it doesn't match anything exactly, say so and show the
+  closest real match rather than silently building the closest-looking product — this is exactly how
+  `GXT5LI-2000LVRT2UX` (missing a trailing "L") got caught before anything was built.
 - Pull specs from the manufacturer's official installer/user guide or spec sheet, not reseller listings
   alone — resellers occasionally disagree with each other (e.g. weight/voltage typos) or omit connector
   detail. Cross-check anything a reseller-only source claims against the official PDF where possible.
+  Watch for aggregated/AI-summarized search results specifically: a number that's suspiciously close to
+  the arithmetic midpoint of two other real values in the same series (e.g. a claimed weight landing
+  almost exactly between the row above and below it in a spec table) is a strong signal the summarizer
+  interpolated rather than read an actual cell — verify against the primary document directly instead
+  of trusting the summary.
+- When a manual's own multi-column comparison table conflicts with that model's dedicated product page
+  or an independent listing, trust the dedicated page — multi-column PDF tables have repeatedly
+  extracted wrong (values shifted or dropped between columns) across this project, while single-model
+  pages have been reliable. Cross-check at least one independent source before treating either as final.
 - If the official manual is only available as PDF and `pdftotext`/`poppler-utils` aren't installed (no
   `sudo` in this environment), extract text with a throwaway venv: `python3 -m venv /tmp/x/venv &&
   /tmp/x/venv/bin/pip install pypdf`, then `PdfReader(...).pages[i].extract_text()`. Clean up the temp
@@ -117,10 +148,27 @@ When building a device type from manufacturer documentation (as opposed to a use
   set of components — don't hardcode any single option onto the device type or guess which one a real
   unit has installed. Model these as a `module-bay` and build every documented option as its own
   module-type instead, per **Module bays instead of hardcoded cards/PODs** above.
-- Before considering a new file done, validate it locally rather than relying on CI:
-  `jsonschema` (`Draft202012Validator`) against `schema/devicetype.json` with `schema/generated_schema.json`,
-  `schema/reusable.json`, and `schema/components.json` registered under their `urn:devicetype-library:*`
-  ids, plus `yamllint -c .yamllint.yaml`. Both are installable in a throwaway venv the same way as above.
+- Before considering a new file done, validate it locally rather than relying on CI.
+  - **`pytest tests/definitions_test.py -k "..."` silently under-validates uncommitted files — do not
+    trust a passing run at face value for a file that isn't committed yet.** Its file discovery is
+    git-diff-based (`upstream/master` vs `HEAD`, unioned with `index.diff("HEAD")`), and a brand-new
+    file that's only staged (`git add`, not committed) shows up as a spurious "delete" in that diff math
+    and gets filtered out — the run reports "N passed" with N files silently missing, no error, no
+    warning. This isn't hypothetical: it happened in this project (`GXT4-700RT120.yaml` reported as
+    validated when 0 tests had actually run for it). Only genuinely-committed files are reliably
+    discovered this way.
+  - **For anything not yet committed, validate directly instead** — load schemas with
+    `json.loads(..., parse_float=decimal.Decimal)`, YAML with `tests.yaml_loader.DecimalSafeLoader`, and
+    run `Draft202012Validator(schema, registry=registry).iter_errors(data)` yourself against the specific
+    file paths (don't rely on glob/diff discovery). This is what `tests/definitions_test.py` does
+    internally, minus the git-diff file-selection step, so it's just as authoritative and Decimal-safe
+    (parsing both the schema *and* the instance data as `Decimal` avoids the binary-float `multipleOf`
+    false-positive a naive `yaml.safe_load` + plain-float check can hit — e.g. `5.1` failing a naive
+    check even though it's a legitimate weight). Needs `pip install -r requirements.txt` in the
+    throwaway venv (for `jsonschema`, `PyYAML`, `referencing`) plus `yamllint -c .yamllint.yaml`.
+  - Run the real `pytest -k` suite too as a secondary confirmation once files are committed (or to sanity
+    check files that already were committed in an earlier turn) — `DTL_USE_LOCAL_KNOWN_SLUGS=1` avoids a
+    network fetch of upstream's known-slugs list.
 
 # Rules for Claude
 

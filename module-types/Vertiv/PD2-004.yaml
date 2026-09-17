@@ -2,7 +2,9 @@
 manufacturer: Vertiv
 model: PD2-004
 part_number: PD2-004
-description: 'UPS GXT4 | POD | In: L14-30P (x1) | Out: L5-20R (x4), L5-30R (x2)'
+weight: 9.9
+weight_unit: lb
+description: 'UPS GXT3/GXT4 | POD | In: L14-30P (x1) | Out: L5-20R (x4), L5-30R (x2)'
 comments: '[Data Sheet](https://www.vertiv.com/49f4fa/globalassets/products/critical-power/uninterruptible-power-supplies-ups/liebert-gxt4-208v-5000-10000va-6000rtl630-user-manual-sl-23194.pdf)'
 power-ports:
   - name: Input Power [{module}]

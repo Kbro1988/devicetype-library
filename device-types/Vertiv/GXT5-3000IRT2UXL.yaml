@@ -5,38 +5,41 @@ slug: vertiv-gxt5-3000irt2uxl
 part_number: GXT5-3000IRT2UXL
 u_height: 2
 is_full_depth: true
-comments: Vertiv GXT5 UPS , 3000 VA, Rack/tower 2U [Product Page](https://www.vertiv.com/4a0991/globalassets/products/critical-power/uninterruptible-power-supplies-ups/user-manual_ap-version.pdf)
-weight: 28.5
-weight_unit: kg
+comments: '[Data Sheet](https://www.vertiv.com/en-us/products-catalog/critical-power/uninterruptible-power-supplies-ups/gxt5-3000irt2uxl-vertiv-liebert-gxt5-ups---3000va3000w-230v--online-rack-tower/)'
+weight: 62
+weight_unit: lb
 console-ports:
   - name: USB
     type: usb-b
   - name: RS232
     type: rj-45
-  - name: RS485
-    type: rj-45
 interfaces:
-  - name: Network Option (IntelliSlot Port)
-    type: 1000base-t
-    mgmt_only: true
+  - name: RS485
+    type: other
+    description: Control port for Vertiv temperature/humidity sensors (RJ-45)
+module-bays:
+  - name: IntelliSlot
+    position: IntelliSlot
 power-ports:
   - name: Input Power
     type: iec-60320-c20
+    maximum_draw: 3600
   - name: Battery connector (EBC)
     type: other
     label: ebc-input
 power-outlets:
-  - name: Power Outlet - Non Programmable 1
+  - name: Output 1
     type: iec-60320-c13
-  - name: Power Outlet - Non Programmable 2
+  - name: Output 2
     type: iec-60320-c13
-  - name: Power Outlet - Programmable 1
+  - name: Output 3
     type: iec-60320-c13
-  - name: Power Outlet - Programmable 2
+  - name: Output 4
     type: iec-60320-c13
-  - name: Power Outlet - Programmable 3
+  - name: Output 5
     type: iec-60320-c13
-  - name: Power Outlet - Programmable 4
+  - name: Output 6
     type: iec-60320-c13
-  - name: Power Outlet - Non Programmable 15A
+  - name: Output 7
     type: iec-60320-c19
+description: 'UPS | 3000VA/3000W | 230V'

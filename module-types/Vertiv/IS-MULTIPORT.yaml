@@ -1,0 +1,15 @@
+---
+manufacturer: Vertiv
+model: IS-MULTIPORT
+part_number: IS-MULTIPORT
+description: 'UPS | IntelliSlot | MultiPort Card - 4x Computer Shutdown Coordination'
+comments: '[Data Sheet](https://www.corporatearmor.com/product/vertiv-liebert-intellislot-multiport-card-multiplexing-device-to-enable-ups-monitoring-and-shutdown-communications-is-multiport/)'
+interfaces:
+  - name: Port 1 [{module}]
+    type: other
+  - name: Port 2 [{module}]
+    type: other
+  - name: Port 3 [{module}]
+    type: other
+  - name: Port 4 [{module}]
+    type: other
