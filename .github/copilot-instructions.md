@@ -1,5 +1,12 @@
 # Repository scope and architecture
 
+## Copilot handoff
+
+This file is the authoritative guidance for Copilot sessions in this repository. It covers
+the fork/branch workflow, schema and validation behavior, source-verification requirements,
+custom YAML conventions, and Vertiv UPS module modeling rules. Update this file whenever
+Copilot-facing repository guidance changes.
+
 This is Kevin's personal fork of the NetBox Device Type Library. It is a data repository:
 YAML definitions under `device-types/`, `module-types/`, and `rack-types/` describe NetBox
 objects, while `elevation-images/` and `module-images/` provide optional visual assets.
@@ -60,6 +67,17 @@ The hooks enforce YAML parsing, trailing-newline/whitespace cleanup, strict yaml
 the repository's 2-space mapping / 4-space sequence formatting. The main pre-commit
 configuration also runs `tests/definitions_test.py`; its test collection is intentionally
 pinned rather than using bare `pytest`.
+
+For a new or uncommitted definition, use the direct validator instead of relying on the
+git-diff-based pytest discovery:
+
+```bash
+make validate-file FILE=device-types/Manufacturer/Model.yaml
+```
+
+The `Makefile` also provides `make validate`, `make lint`, and `make format`. The
+`new-device-definition` skill in `.github/skills/` provides the end-to-end research and
+authoring workflow for new definitions.
 
 ## Definition conventions
 
